@@ -71,7 +71,7 @@ app.post('/heroku/sso', function handleSSO(req,res) {
   console.log(req.body);
 
   // Render SSO dashboard after checks.
-  return res.redirect(`https://bluzelledashboard.herokuapp.com/`);
+  return res.redirect(`https://bluzelledashboard.herokuapp.com?app=${req.body.app}`);
 });
 
 //authenticate request.  Check request header and verify against manifest
