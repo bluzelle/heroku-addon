@@ -77,7 +77,7 @@ app.post('/heroku/sso', function handleSSO(req,res) {
 //authenticate request.  Check request header and verify against manifest
 app.use('/heroku', function handleAuthenticate(req, res, next) {
   var creds = auth(req);
-  console.log("heroku provision body: " + req.body);
+  console.log("heroku provision body: " + creds);
   //check if authorization header is presents
   if ( typeof creds === 'undefined' ) {
     console.log("missing authorization header");
