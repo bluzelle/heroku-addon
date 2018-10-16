@@ -108,9 +108,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   res.json({
     'id': uuid,
     'config': {
-      'BLUZELLE_ADDRESS': blzAddress,
-      'BLUZELLE_PORT': blzPort,
-      'BLUZELLE_UUID': blzUuid
+      'BLUZELLEDB_ADDRESS': blzAddress,
+      'BLUZELLEDB_PORT': blzPort,
+      'BLUZELLEDB_UUID': blzUuid
     }
   });
 });

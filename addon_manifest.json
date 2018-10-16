@@ -1,5 +1,5 @@
 {
-  "id": "bluzelle",
+  "id": "bluzelledb",
   "api": {
     "test": {
       "sso_url": "http://localhost:8080/heroku/sso",
@@ -8,24 +8,23 @@
     "regions": [
       "*"
     ],
-    "password": "2c5d8884a173acd5303837a2400368d9",
+    "password": "cPY6I5jY25HpP4tJEIV7NFlYr1QSIgNN",
     "requires": [
       "many_per_app",
       "attachable"
     ],
-    "sso_salt": "849314ad947d914ac29ceb698853682b",
+    "sso_salt": "1siYUYVM4JNDR4baj2ykHINsOPhyifsk",
     "production": {
-      "sso_url": "https://bluzelleaddon.herokuapp.com/heroku/sso",
-      "base_url": "https://bluzelleaddon.herokuapp.com/heroku/resources"
+      "sso_url": "https://bluzelledb.herokuapp.com/heroku/sso",
+      "base_url": "https://bluzelledb.herokuapp.com/heroku/resources"
     },
     "config_vars": [
-      "BLUZELLE_ADDRESS",
-      "BLUZELLE_PORT",
-      "BLUZELLE_UUID"
+      "BLUZELLEDB_ADDRESS",
+      "BLUZELLEDB_PORT",
+      "BLUZELLEDB_UUID"
     ],
-    "config_vars_prefix": "BLUZELLE"
+    "config_vars_prefix": "BLUZELLEDB"
   },
-  "name": "Bluzelle",
-  "$base": 153784647611454,
-  "cli_plugin_name": "bluzelle"
+  "name": "Bluzelle DB",
+  "$base": 153972079760042
 }
