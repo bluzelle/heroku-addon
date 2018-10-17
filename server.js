@@ -25,6 +25,10 @@ const port = process.env.PORT || 8080;
 //assignment of express server
 const app = express();
 
+const bluzelleStudioUUID = uuid.v4();
+const bluzelleStudioAddress = "ws://testnet.bluzelle.com";
+const bluzelleStudioPort = "51010";
+
 //use the endpoints
 app.use('/heroku/resources', bodyParser.json());
 app.use('/heroku/sso', bodyParser.urlencoded());
@@ -71,7 +75,8 @@ app.post('/heroku/sso', function handleSSO(req,res) {
   console.log(req.body);
 
   // Render SSO dashboard after checks.
-  return res.redirect(`https://bluzelledashboard.herokuapp.com?app=${req.body.app}`);
+  //switch to studio.bluzelle.com once SSL issue has been solved
+  return res.redirect(`http://bluzellestudio.heroku.com?address=${bluzelleStudioAddress}&port=${bluzelleStudioPort}&uuid=${bluzelleStudioUUID}`);
 });
 
 //authenticate request.  Check request header and verify against manifest
@@ -98,12 +103,11 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //End point that handles provisioning.  This handler will take care of heroku provisioning 
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
-  var uuid = req.uuid;
 
   //set config vars.  For now, hardcoding testnet
-  var blzUuid = uuid;
-  var blzAddress = "ws://testnet.bluzelle.com";
-  var blzPort = "51010";
+  var blzUuid = bluzelleStudioUUID;
+  var blzAddress = bluzelleStudioAddress;
+  var blzPort = bluzelleStudioPort;
   
   res.json({
     'id': uuid,
