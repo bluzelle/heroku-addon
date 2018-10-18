@@ -25,6 +25,7 @@ const port = process.env.PORT || 8080;
 //assignment of express server
 const app = express();
 
+app.set('uuid', uuid.v4());
 app.set('bluzelleStudioUUID', uuid.v4());
 app.set('bluzelleStudioAddress', 'ws://testnet.bluzelle.com'); 
 app.set('bluzelleStudioPort', '51010');  
@@ -105,7 +106,7 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 app.post('/heroku/resources', function handleProvisioning(req, res) {
   
   res.json({
-    'id': uuid,
+    'id': app.get('uuid'),
     'config': {
       'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
       'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
