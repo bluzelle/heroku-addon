@@ -103,18 +103,13 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //End point that handles provisioning.  This handler will take care of heroku provisioning 
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
-  console.log(app.get('bluzelleStudioUUID') + " " + app.get('bluzelleStudioAddress') + " " + app.get('bluzelleStudioPort'));
-  //set config vars.  For now, hardcoding testnet
-  var blzUuid = app.get('bluzelleStudioUUID');
-  var blzAddress = app.get('bluzelleStudioAddress');
-  var blzPort = app.get('bluzelleStudioPort');
   
   res.json({
     'id': uuid,
     'config': {
-      'BLUZELLEDB_ADDRESS': blzAddress,
-      'BLUZELLEDB_PORT': blzPort,
-      'BLUZELLEDB_UUID': blzUuid
+      'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
+      'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
+      'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
     }
   });
 });
