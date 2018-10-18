@@ -76,7 +76,8 @@ app.post('/heroku/sso', function handleSSO(req,res) {
 
   // Render SSO dashboard after checks.
   //switch to studio.bluzelle.com once SSL issue has been solved
-  return res.redirect(`http://bluzellestudio.heroku.com?address=${bluzelleStudioAddress}&port=${bluzelleStudioPort}&uuid=${bluzelleStudioUUID}`);
+  //return res.redirect(`http://bluzellestudio.heroku.com?address=${bluzelleStudioAddress}&port=${bluzelleStudioPort}&uuid=${bluzelleStudioUUID}`);
+  return res.redirect(`http://bluzellestudio.heroku.com`);
 });
 
 //authenticate request.  Check request header and verify against manifest
