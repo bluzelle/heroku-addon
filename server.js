@@ -27,7 +27,7 @@ const app = express();
 
 app.set('uuid', uuid.v4());
 app.set('bluzelleStudioUUID', uuid.v4());
-app.set('bluzelleStudioAddress', 'ws://testnet.bluzelle.com'); 
+app.set('bluzelleStudioAddress', 'ws://testnet.zanzy.com'); 
 app.set('bluzelleStudioPort', '51010');  
 
 //use the endpoints
