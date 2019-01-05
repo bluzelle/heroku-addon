@@ -103,14 +103,25 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
   next();
 });
 
+const blzObj = bluzelle({
+  entry: "ws://bernoulli.bluzelle.com:51010",
+  uuid: "bluzelleherokuaddon",
+  private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+});
+
+const bluzelleInstance = async (key, value) => {
+  await blzObj.createDB();
+  await blzObj.create(key, value);
+  blzObj.close();
+};
+
 //End point that handles provisioning.  This handler will take care of heroku provisioning 
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
   
-  var blzObj = bluzelle({
-    entry: "ws://bernoulli.bluzelle.com:51010",
-    uuid: "bluzelleherokuaddon",
-    private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+  bluzelleInstance(app.get('uuid'),req.body.name).catch(e => { 
+    blzObj.close();
+    throw e;
   });
 
   await blzObj.createDB();
