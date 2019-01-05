@@ -109,7 +109,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   
   let blzObj = bluzelle({
     entry: "ws://bernoulli.bluzelle.com:51010",
-    uuid: "bluzelleherokuaddons",
+    uuid: "bluzelleherokuaddonapps",
     private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
   });
   
@@ -120,7 +120,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     blzObj.close();
   };
 
-  bluzelleInstance(app.get('uuid'),req.body).catch(e => { 
+  var parsedjson = JSON.parse(req.body)
+
+  bluzelleInstance(app.get('uuid'),parsedjson).catch(e => { 
     blzObj.close();
     throw e;
   });
