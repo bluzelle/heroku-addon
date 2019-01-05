@@ -107,13 +107,13 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
   
-  const blzObj = bluzelle({
+  var blzObj = bluzelle({
     entry: "ws://bernoulli.bluzelle.com:51010",
     uuid: "bluzelleherokuaddon",
     private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
   });
   
-  const bluzelleInstance = async (key, value) => {
+  var bluzelleInstance = async (key, value) => {
     await blzObj.createDB();
     await blzObj.create(key, value);
     blzObj.close();
