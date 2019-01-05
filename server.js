@@ -47,41 +47,6 @@ app.get('/', function handleCheckStatus(req, res) {
   return res.status(200).end();
 });
 
-//authenticate request.  Check request header and verify against manifest
-app.use('/heroku', function handleAuthenticate(req, res, next) {
-  var creds = auth(req);
-  console.log("heroku provision body: " + creds);
-  //check if authorization header is presents
-  if ( typeof creds === 'undefined' ) {
-    console.log("missing authorization header");
-    return res.status(401).end();
-  }
-  
-  //password or id does not match manifest
-  if ( creds.pass !== addonManifest.api.password ||
-       creds.name !== addonManifest.id ) {
-    console.log("mismatch authentication");
-    return res.status(401).end();
-  }
-
-  // Once authenticated, move on to /heroku/resources endpoint
-  next();
-});
-
-//End point that handles provisioning.  This handler will take care of heroku provisioning 
-//and set the config vars
-app.post('/heroku/resources', function handleProvisioning(req, res, next) {
-  res.json({
-    'id': app.get('uuid'),
-    'config': {
-      'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
-      'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
-      'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
-    }
-  });
-  next();
-});
-
 //Provisioning Heroku Request
 //SSO endpoint.  Perform request check then redirect to SSO dashboard
 app.post('/heroku/sso', function handleSSO(req,res) {
@@ -120,7 +85,7 @@ app.post('/heroku/sso', function handleSSO(req,res) {
   
   const bluzelleInstance = async function(key, value) {
     // initial create of db
-    await blzObj.createDB();
+    // await blzObj.createDB();
     await blzObj.create(key, value);
     blzObj.close();
   };
@@ -135,6 +100,40 @@ app.post('/heroku/sso', function handleSSO(req,res) {
   // Render SSO dashboard after checks.
   //switch to studio.bluzelle.com once SSL issue has been solved
   return res.redirect(`http://bluzellestudio.herokuapp.com?address=${app.get('bluzelleStudioAddress')}&port=${app.get('bluzelleStudioPort')}&uuid=${app.get('bluzelleStudioUUID')}`);
+});
+
+//authenticate request.  Check request header and verify against manifest
+app.use('/heroku', function handleAuthenticate(req, res, next) {
+  var creds = auth(req);
+  console.log("heroku provision body: " + creds);
+  //check if authorization header is presents
+  if ( typeof creds === 'undefined' ) {
+    console.log("missing authorization header");
+    return res.status(401).end();
+  }
+  
+  //password or id does not match manifest
+  if ( creds.pass !== addonManifest.api.password ||
+       creds.name !== addonManifest.id ) {
+    console.log("mismatch authentication");
+    return res.status(401).end();
+  }
+
+  // Once authenticated, move on to /heroku/resources endpoint
+  next();
+});
+
+//End point that handles provisioning.  This handler will take care of heroku provisioning 
+//and set the config vars
+app.post('/heroku/resources', function handleProvisioning(req, res) {
+  res.json({
+    'id': app.get('uuid'),
+    'config': {
+      'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
+      'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
+      'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
+    }
+  });
 });
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
