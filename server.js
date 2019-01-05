@@ -120,9 +120,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     blzObj.close();
   };
 
-  var parsedjson = JSON.parse(req.body)
+  console.log(req.body);
 
-  bluzelleInstance(app.get('uuid'),parsedjson).catch(e => { 
+  bluzelleInstance(app.get('uuid'),req.body).catch(e => { 
     blzObj.close();
     throw e;
   });
