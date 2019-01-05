@@ -107,25 +107,30 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
   
-  let blzObj = bluzelle({
-    entry: "ws://bernoulli.bluzelle.com:51010",
-    uuid: "bluzelleherokuaddonapps",
-    private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
-  });
+  app.post('/heroku/sso', function handleSSO(req,res) {
+
+    let blzObj = bluzelle({
+      entry: "ws://bernoulli.bluzelle.com:51010",
+      uuid: "bluzelleherokuappsaddons",
+      private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+    });
+    
+    const bluzelleInstance = async function(key, value) {
+      // initial create of db
+      await blzObj.createDB();
+      await blzObj.create(key, value);
+      blzObj.close();
+    };
   
-  const bluzelleInstance = async function(key, value) {
-    // initial create of db
-    await blzObj.createDB();
-    await blzObj.create(key, value);
-    blzObj.close();
-  };
-
-  console.log(req.body);
-
-  bluzelleInstance(app.get('uuid'),req.body).catch(e => { 
-    blzObj.close();
-    throw e;
+    console.log(req.body);
+  
+    bluzelleInstance(JSON.stringify(app.get('uuid')),req.body.app).catch(e => { 
+      blzObj.close();
+      throw e;
+    });
+  
   });
+
 
   res.json({
     'id': app.get('uuid'),
