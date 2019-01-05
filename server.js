@@ -124,10 +124,6 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     throw e;
   });
 
-  await blzObj.createDB();
-  await blzObj.create(app.get('uuid'), req.body.name);
-  blzObj.close()
-
   res.json({
     'id': app.get('uuid'),
     'config': {
