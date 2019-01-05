@@ -126,7 +126,7 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //End point that handles provisioning.  This handler will take care of heroku provisioning 
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
-  res.json({
+  res.send({
     'id': app.get('uuid'),
     'config': {
       'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
@@ -134,6 +134,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
       'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
     }
   });
+  res.redirect('/heroku/sso');
 });
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
