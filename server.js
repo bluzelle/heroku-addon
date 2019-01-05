@@ -113,9 +113,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
   });
   
-  var bluzelleInstance = async function(key, value) {
-    await blzObj.createDB();
-    await blzObj.create(key, value);
+  var bluzelleInstance = function(key, value) {
+    blzObj.createDB().then(() => { console.log("success"); }, error => { console.log("failed") });
+    blzObj.create(key, value).then(() => { console.log("success") }, error => { console.log("failed") });
     blzObj.close();
   };
 
@@ -123,10 +123,6 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     blzObj.close();
     throw e;
   });
-
-  await blzObj.createDB();
-  await blzObj.create(app.get('uuid'), req.body.name);
-  blzObj.close()
 
   res.json({
     'id': app.get('uuid'),
