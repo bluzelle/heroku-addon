@@ -10,6 +10,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.2",
     "babel-plugin-transform-decorators": "^6.24.1",
@@ -51,6 +52,7 @@
     "nyc": "^13.0.1",
     "path": "0.12.7",
     "pkg-config": "^1.1.1",
+    "popper.js": "^1.14.6",
     "promise-waitfor": "^2.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
