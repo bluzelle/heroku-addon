@@ -18,7 +18,7 @@ var crypto = require('crypto');
 //for generating uuids
 var uuid = require('node-uuid');
 //bluzelle db
-var bluzelle = require('bluzelle');
+var bluzelle = require('./bluzelle/lib/bluzelle-node');
 
 //for spawning express server
 const express = require('express');
