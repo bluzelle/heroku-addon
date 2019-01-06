@@ -117,7 +117,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  var fetch = new FetchStream("/addons/" + req.body.id);
+  var fetch = new FetchStream("https://api.heroku.com/addons/" + req.body.id);
 
   fetch.on("data", function(data){
 
