@@ -19,6 +19,8 @@ var crypto = require('crypto');
 var uuid = require('node-uuid');
 //bluzelle db
 var {bluzelle} = require('bluzelle');
+var FetchStream = require("fetch").FetchStream;
+
 
 //for spawning express server
 const express = require('express');
@@ -77,26 +79,6 @@ app.post('/heroku/sso', function handleSSO(req,res) {
   //output request for verification  
   console.log(req.body);
 
-  let blzObj = bluzelle({
-    entry: "ws://bernoulli.bluzelle.com:51010",
-    uuid: "herokubluzelleaddonapps",
-    private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
-  });
-  
-  const bluzelleInstance = async function(key, value) {
-    // initial create of db
-    // await blzObj.createDB();
-    await blzObj.create(key, value);
-    blzObj.close();
-  };
-
-  console.log(req.body);
-
-  bluzelleInstance(JSON.stringify(app.get('uuid')),req.body.app).catch(e => { 
-    blzObj.close();
-    throw e;
-  });
-
   // Render SSO dashboard after checks.
   //switch to studio.bluzelle.com once SSL issue has been solved
   return res.redirect(`http://bluzellestudio.herokuapp.com?address=${app.get('bluzelleStudioAddress')}&port=${app.get('bluzelleStudioPort')}&uuid=${app.get('bluzelleStudioUUID')}`);
@@ -126,14 +108,41 @@ app.use('/heroku', function handleAuthenticate(req, res, next) {
 //End point that handles provisioning.  This handler will take care of heroku provisioning 
 //and set the config vars
 app.post('/heroku/resources', function handleProvisioning(req, res) {
-  res.send({
+  res.json({
     'id': app.get('uuid'),
     'config': {
       'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
       'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
       'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
     }
-  }).redirect('/heroku/sso');
+  });
+
+  var fetch = new FetchStream("/addons/" + req.body.id);
+
+  fetch.on("data", function(data){
+
+    console.log(data);
+
+    let blzObj = bluzelle({
+      entry: "ws://bernoulli.bluzelle.com:51010",
+      uuid: "herokubluzelleaddonapps",
+      private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+    });
+    
+    const bluzelleInstance = async function(key, value) {
+      // initial create of db
+      // await blzObj.createDB();
+      await blzObj.create(key, value);
+      blzObj.close();
+    };
+  
+    bluzelleInstance(JSON.stringify(app.get('uuid')),data.body.app).catch(e => { 
+      blzObj.close();
+      throw e;
+    });
+
+  });
+
 });
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
