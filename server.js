@@ -117,7 +117,13 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  fetchUrl("https://api.heroku.com/addons/" + req.body.id, function(error, meta, body){
+  var options = {
+    headers:{
+      "Accept": "application/vnd.heroku+json; version=3"
+    }
+  }
+
+  fetchUrl("https://api.heroku.com/addons/" + req.body.id, options, function(error, meta, body){
     console.log(body.toString());
 
     // let blzObj = bluzelle({
