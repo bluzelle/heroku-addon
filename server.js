@@ -19,7 +19,7 @@ var crypto = require('crypto');
 var uuid = require('node-uuid');
 //bluzelle db
 var {bluzelle} = require('bluzelle');
-var FetchStream = require("fetch").FetchStream;
+var fetchUrl = require("fetch").fetchUrl;
 
 
 //for spawning express server
@@ -117,32 +117,27 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  var fetch = new FetchStream("https://api.heroku.com/addons/" + req.body.id);
+  fetchUrl("https://api.heroku.com/addons/" + req.body.id, function(error, meta, body){
+    console.log(body.toString());
 
-  fetch.on("data", function(data){
-
-    console.log(data);
-
-    let blzObj = bluzelle({
-      entry: "ws://bernoulli.bluzelle.com:51010",
-      uuid: "herokubluzelleaddonapps",
-      private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
-    });
+    // let blzObj = bluzelle({
+    //   entry: "ws://bernoulli.bluzelle.com:51010",
+    //   uuid: "herokubluzelleaddonapps",
+    //   private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+    // });
     
-    const bluzelleInstance = async function(key, value) {
-      // initial create of db
-      // await blzObj.createDB();
-      await blzObj.create(key, value);
-      blzObj.close();
-    };
+    // const bluzelleInstance = async function(key, value) {
+    //   // initial create of db
+    //   // await blzObj.createDB();
+    //   await blzObj.create(key, value);
+    //   blzObj.close();
+    // };
   
-    bluzelleInstance(JSON.stringify(app.get('uuid')),data.body.app).catch(e => { 
-      blzObj.close();
-      throw e;
-    });
-
+    // bluzelleInstance(JSON.stringify(app.get('uuid')),data.body.app).catch(e => { 
+    //   blzObj.close();
+    //   throw e;
+    // });
   });
-
 });
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
