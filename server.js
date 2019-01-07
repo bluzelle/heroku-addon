@@ -19,7 +19,7 @@ var crypto = require('crypto');
 var uuid = require('node-uuid');
 //bluzelle db
 var {bluzelle} = require('bluzelle');
-var fetchUrl = require("fetch").fetchUrl;
+var fetch = require("fetch");
 
 
 //for spawning express server
@@ -117,15 +117,18 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  var options = {
-    headers:{
-      "Accept": "application/vnd.heroku+json; version=3"
-    }
-  }
+  console.log (req.body);
 
-  fetchUrl("https://api.heroku.com/addons/" + req.body.id, options, function(error, meta, body){
-    console.log(body.toString());
+  // var paramsString = "resource_id=" + req.body.id + "&topic=api";
+  // var searchParams = new URLSearchParams(paramsString);
 
+  // fetch('"https://addon-slug.herokuapp.com/heroku/sso', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  //   },
+  //   body: searchParams
+  // })
     // let blzObj = bluzelle({
     //   entry: "ws://bernoulli.bluzelle.com:51010",
     //   uuid: "herokubluzelleaddonapps",
