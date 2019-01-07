@@ -21,6 +21,7 @@ var uuid = require('node-uuid');
 var {bluzelle} = require('bluzelle');
 var fetch = require("fetch").fetchUrl;
 const { URL, URLSearchParams } = require('url');
+const fetchNode = require('node-fetch');
 
 
 //for spawning express server
@@ -121,20 +122,18 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   console.log (req.body);
 
   var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
-  var url = new URL('https://id.heroku.com/oauth/token')
-  var params = {grant_type:'authorization_code', code:req.body.oauth_grant.code, client_secret: clientSecret}
+  const params = new URLSearchParams();
 
-  url.search = new URLSearchParams(params)
+  params.append('grant_type', 'authorization_code');
+  params.append('code', req.body.oauth_grant.code);
+  params.append('client_secret', clientSecret);
+  
+  fetchNode('https://id.heroku.com/oauth/token', { method: 'POST', body: params })
+      .then(res => res.json())
+      .then(function(response){
+        console.log(response)
+      });
 
-  var opt = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    }
-  }
-
-  fetch(JSON.stringify(url), opt, function(error, meta, body){
-    console.log(body.toString());
 
     // var options = {
     //   'Accept': 'application/vnd.heroku+json; version=3',
@@ -144,7 +143,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     // fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
     //   console.log(body.toString());
     // });
-  });
+
 
   // let blzObj = bluzelle({
     //   entry: "ws://bernoulli.bluzelle.com:51010",

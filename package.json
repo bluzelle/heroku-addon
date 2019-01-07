@@ -49,6 +49,7 @@
     "mobx-react": "^5.2.8",
     "mobx-react-devtools": "^6.0.3",
     "mocha": "^5.2.0",
+    "node-fetch": "^2.3.0",
     "node-uuid": "^1.4.8",
     "nyc": "^13.0.1",
     "path": "0.12.7",
