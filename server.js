@@ -186,9 +186,7 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
     blzObj.close();
   };
 
-  console.log(req.params.id)
-
-  bluzelleInstance(req.uuid).catch(e => { 
+  bluzelleInstance(req.params.id).catch(e => { 
     blzObj.close();
     throw e;
   });
