@@ -180,6 +180,7 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
   const bluzelleInstance = async function(key) {
     // initial create of db
     // await blzObj.createDB();
+    console.log(key);
     await blzObj.delete(key);
     blzObj.close();
   };
