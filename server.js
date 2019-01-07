@@ -167,27 +167,29 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
 });
 
 // //Delete endpoint for which an add-on service is deleted
-// app.delete('/heroku/resources/:id', function handleDelete(req, res) {
-//   // let blzObj = bluzelle({
-//   //   entry: "ws://bernoulli.bluzelle.com:51010",
-//   //   uuid: "herokubluzelleaddonapps",
-//   //   private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
-//   // });
+app.delete('/heroku/resources/:id', function handleDelete(req, res) {
+  let blzObj = bluzelle({
+    entry: "ws://bernoulli.bluzelle.com:51010",
+    uuid: "herokubluzelleaddonapps",
+    private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+  });
   
-//   // const bluzelleInstance = async function(key) {
-//   //   // initial create of db
-//   //   // await blzObj.createDB();
-//   //   await blzObj.delete(key);
-//   //   blzObj.close();
-//   // };
+  const bluzelleInstance = async function(key) {
+    // initial create of db
+    // await blzObj.createDB();
+    await blzObj.delete(key);
+    blzObj.close();
+  };
 
-//   console.log(req.body);
-
-//   // bluzelleInstance(JSON.stringify(req.uuid)).catch(e => { 
-//   //   blzObj.close();
-//   //   throw e;
-//   // });
-// });
+  bluzelleInstance(JSON.stringify(req.uuid)).catch(e => { 
+    blzObj.close();
+    throw e;
+  });
+  return res.status(204).json({
+    'message': `${req.uuid}: ` +
+      `No Content`
+  });
+});
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
 //return a service unavailable response
