@@ -179,6 +179,8 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
     // await blzObj.createDB();
     const hasMyKey = await blzObj.has(key);
 
+    console.log(key)
+
     if(hasMyKey){
       await blzObj.delete(key);
     }
@@ -186,7 +188,7 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
     blzObj.close();
   };
 
-  bluzelleInstance(JSON.stringify(req.uuid)).catch(e => { 
+  bluzelleInstance(req.uuid).catch(e => { 
     blzObj.close();
     throw e;
   });
