@@ -132,7 +132,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
   }
-  fetch(url, opt).then(function(response){
+  fetch(JSON.stringify(url), opt).then(function(response){
     console.log(response)
     // var options = {
     //   'Accept': 'application/vnd.heroku+json; version=3',
