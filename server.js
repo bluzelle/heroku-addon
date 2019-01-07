@@ -123,13 +123,14 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   var paramsString = "grant_type=authorization_code&code=" + req.body.oauth_grant.code +"&client_secret=" + clientSecret;
   var searchParams = new URLSearchParams(paramsString);
 
-  fetch('https://id.heroku.com/oauth/token', {
+  var opt = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
-    body: searchParams
-  }).then(function(response){
+    payload: searchParams
+  }
+  fetch('https://id.heroku.com/oauth/token', opt, function(response){
 
     var options = {
       'Accept': 'application/vnd.heroku+json; version=3',
