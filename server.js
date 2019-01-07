@@ -128,13 +128,13 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
-    payload: searchParams
+    payload: JSON.stringify(searchParams)
   }
   fetch('https://id.heroku.com/oauth/token', opt, function(response){
 
     var options = {
       'Accept': 'application/vnd.heroku+json; version=3',
-      'authorization': 'Bearer ' + response.access_token
+      'authorization': 'Bearer ' + JSON.stringify(response.access_token)
     }
 
     fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
