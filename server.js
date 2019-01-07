@@ -131,18 +131,18 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   fetchNode('https://id.heroku.com/oauth/token', { method: 'POST', body: params })
       .then(res => res.json())
       .then(function(response){
-        console.log(response)
+        var options = {
+          'Accept': 'application/vnd.heroku+json; version=3',
+          'authorization': 'Bearer ' + JSON.stringify(response.access_token)
+        }
+
+        fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
+          console.log(body.toString());
+        });
       });
 
 
-    // var options = {
-    //   'Accept': 'application/vnd.heroku+json; version=3',
-    //   'authorization': 'Bearer ' + JSON.stringify(response.access_token)
-    // }
-
-    // fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
-    //   console.log(body.toString());
-    // });
+    
 
 
   // let blzObj = bluzelle({
