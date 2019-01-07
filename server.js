@@ -120,6 +120,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
 
   console.log (req.body);
 
+  var addonCallback = req.body.callback_url;
   var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
   const params = new URLSearchParams();
 
@@ -140,9 +141,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
           } 
         }
         
-        console.log('https://api.heroku.com/addons/' + req.body.id)
+        console.log(addonCallback)
         
-        fetchNode('https://api.heroku.com/addons/' + req.body.id, options)
+        fetchNode(addonCallback, options)
           .then(res => res.json())
           .then(function(response){
             console.log(response);
