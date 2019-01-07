@@ -118,11 +118,12 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  console.log(req.body);
-
+  var originalUuid = req.body.uuid;
   var addonCallback = req.body.callback_url;
   var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
   const params = new URLSearchParams();
+
+  console.log(originalUuid);
 
   params.append('grant_type', 'authorization_code');
   params.append('code', req.body.oauth_grant.code);
@@ -157,7 +158,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
               blzObj.close();
             };
           
-            bluzelleInstance(JSON.stringify(app.get('uuid')),response.app.name).catch(e => { 
+            bluzelleInstance(JSON.stringify(originalUuid),response.app.name).catch(e => { 
               blzObj.close();
               throw e;
             });
