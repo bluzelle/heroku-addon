@@ -131,7 +131,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     payload: JSON.stringify(searchParams)
   }
   fetch('https://id.heroku.com/oauth/token', opt, function(response){
-    console.log(response.body)
+    console.log(response)
     // var options = {
     //   'Accept': 'application/vnd.heroku+json; version=3',
     //   'authorization': 'Bearer ' + JSON.stringify(response.access_token)
