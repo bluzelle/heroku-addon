@@ -135,10 +135,13 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
           method: 'GET',
           headers: { 
             'Accept': 'application/vnd.heroku+json; version=3', 
-            'Authorization': 'Bearer ' + JSON.stringify(response.access_token)
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + response.access_token
           } 
         }
-
+        
+        console.log('https://api.heroku.com/addons/' + req.body.id)
+        
         fetchNode('https://api.heroku.com/addons/' + req.body.id, options)
           .then(res => res.json())
           .then(function(response){
