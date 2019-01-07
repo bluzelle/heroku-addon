@@ -131,15 +131,15 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     payload: JSON.stringify(searchParams)
   }
   fetch('https://id.heroku.com/oauth/token', opt, function(response){
+    console.log(response.body)
+    // var options = {
+    //   'Accept': 'application/vnd.heroku+json; version=3',
+    //   'authorization': 'Bearer ' + JSON.stringify(response.access_token)
+    // }
 
-    var options = {
-      'Accept': 'application/vnd.heroku+json; version=3',
-      'authorization': 'Bearer ' + JSON.stringify(response.access_token)
-    }
-
-    fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
-      console.log(body.toString());
-    });
+    // fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
+    //   console.log(body.toString());
+    // });
 
   });
 
