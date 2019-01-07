@@ -146,7 +146,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     //   blzObj.close();
     //   throw e;
     // });
-  });
+  // });
 });
 
 //Updating Plan changes here.  Since this is in alpha stage, only free tier "test" is available.
