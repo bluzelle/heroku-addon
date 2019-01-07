@@ -18,9 +18,9 @@ var crypto = require('crypto');
 //for generating uuids
 var uuid = require('node-uuid');
 //bluzelle db
-// var {bluzelle} = require('bluzelle');
-// const { URLSearchParams } = require('url');
-// const fetchNode = require('node-fetch');
+var {bluzelle} = require('bluzelle');
+const { URLSearchParams } = require('url');
+const fetchNode = require('node-fetch');
 
 
 //for spawning express server
@@ -118,55 +118,51 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
     }
   });
 
-  // console.log (req.body);
+  console.log(req.body);
 
-  // var addonCallback = req.body.callback_url;
-  // var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
-  // const params = new URLSearchParams();
+  var addonCallback = req.body.callback_url;
+  var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
+  const params = new URLSearchParams();
 
-  // params.append('grant_type', 'authorization_code');
-  // params.append('code', req.body.oauth_grant.code);
-  // params.append('client_secret', clientSecret);
+  params.append('grant_type', 'authorization_code');
+  params.append('code', req.body.oauth_grant.code);
+  params.append('client_secret', clientSecret);
   
-  // fetchNode('https://id.heroku.com/oauth/token', { method: 'POST', body: params })
-  //     .then(res => res.json())
-  //     .then(function(response){
+  fetchNode('https://id.heroku.com/oauth/token', { method: 'POST', body: params })
+      .then(res => res.json())
+      .then(function(response){
 
-  //       var options = {
-  //         method: 'GET',
-  //         headers: { 
-  //           'Accept': 'application/vnd.heroku+json; version=3', 
-  //           'Content-Type': 'application/json',
-  //           'authorization': 'Bearer ' + response.access_token
-  //         } 
-  //       }
+        var options = {
+          method: 'GET',
+          headers: { 
+            'Accept': 'application/vnd.heroku+json; version=3', 
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + response.access_token
+          } 
+        }
         
-  //       console.log(addonCallback)
-        
-  //       fetchNode(addonCallback, options)
-  //         .then(res => res.json())
-  //         .then(function(response){
-  //           console.log(response);
-
-  //           let blzObj = bluzelle({
-  //             entry: "ws://bernoulli.bluzelle.com:51010",
-  //             uuid: "herokubluzelleaddonapps",
-  //             private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
-  //           });
+        fetchNode(addonCallback, options)
+          .then(res => res.json())
+          .then(function(response){
+            let blzObj = bluzelle({
+              entry: "ws://bernoulli.bluzelle.com:51010",
+              uuid: "herokubluzelleaddonapps",
+              private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+            });
             
-  //           const bluzelleInstance = async function(key, value) {
-  //             // initial create of db
-  //             // await blzObj.createDB();
-  //             await blzObj.create(key, value);
-  //             blzObj.close();
-  //           };
+            const bluzelleInstance = async function(key, value) {
+              // initial create of db
+              // await blzObj.createDB();
+              await blzObj.create(key, value);
+              blzObj.close();
+            };
           
-  //           bluzelleInstance(JSON.stringify(app.get('uuid')),response.app.name).catch(e => { 
-  //             blzObj.close();
-  //             throw e;
-  //           });
-  //         });
-  //     });
+            bluzelleInstance(JSON.stringify(app.get('uuid')),response.app.name).catch(e => { 
+              blzObj.close();
+              throw e;
+            });
+          });
+      });
 });
 
 // //Delete endpoint for which an add-on service is deleted
