@@ -19,8 +19,7 @@ var crypto = require('crypto');
 var uuid = require('node-uuid');
 //bluzelle db
 var {bluzelle} = require('bluzelle');
-var fetch = require("fetch").fetchUrl;
-const { URL, URLSearchParams } = require('url');
+const { URLSearchParams } = require('url');
 const fetchNode = require('node-fetch');
 
 
@@ -131,15 +130,20 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   fetchNode('https://id.heroku.com/oauth/token', { method: 'POST', body: params })
       .then(res => res.json())
       .then(function(response){
-        
+
         var options = {
-          'Accept': 'application/vnd.heroku+json; version=3',
-          'Authorization': 'Bearer ' + JSON.stringify(response.access_token)
+          method: 'GET',
+          headers: { 
+            'Accept': 'application/vnd.heroku+json; version=3', 
+            'Authorization': 'Bearer ' + JSON.stringify(response.access_token)
+          } 
         }
 
-        fetch('https://api.heroku.com/addons/' + req.body.id, options, function(error, meta, body){
-          console.log(body.toString());
-        });
+        fetchNode('https://api.heroku.com/addons/' + req.body.id, options)
+          .then(res => res.json())
+          .then(function(response){
+            console.log(response);
+          });
       });
 
 
