@@ -148,7 +148,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
             let blzObj = bluzelle({
               entry: "ws://bernoulli.bluzelle.com:51010",
               uuid: "herokubluzelleaddonapps",
-              private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+              private_pem: "MHQCAQEEIFNmJHEiGpgITlRwao/CDki4OS7BYeI7nyz+CM8NW3xToAcGBSuBBAAKoUQDQgAEndHOcS6bE1P9xjS/U+SM2a1GbQpPuH9sWNWtNYxZr0JcF+sCS2zsD+xlCcbrRXDZtfeDmgD9tHdWhcZKIy8ejQ=="
             });
             
             const bluzelleInstance = async function(key, value) {
@@ -176,7 +176,7 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
   let blzObj = bluzelle({
     entry: "ws://bernoulli.bluzelle.com:51010",
     uuid: "herokubluzelleaddonapps",
-    private_pem: "MHQCAQEEIFX4dRK+y8cExp6FCk1vrACBtP9RbWIMgDcBrchQzrqmoAcGBSuBBAAKoUQDQgAE5LhjN3tk2dGAmJnNo9McDvwSTmp0T5M8zqQfK6E4R9qdiIcGICupOblixXnPvUQ1UMzGibU0PVsO0dH8r7/VBw=="
+    private_pem: "MHQCAQEEIFNmJHEiGpgITlRwao/CDki4OS7BYeI7nyz+CM8NW3xToAcGBSuBBAAKoUQDQgAEndHOcS6bE1P9xjS/U+SM2a1GbQpPuH9sWNWtNYxZr0JcF+sCS2zsD+xlCcbrRXDZtfeDmgD9tHdWhcZKIy8ejQ=="
   });
   
   const bluzelleInstance = async function(key) {
