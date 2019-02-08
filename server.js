@@ -154,7 +154,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
             const bluzelleInstance = async function(key, value) {
               // initial create of db
 
-              if(!await blzObj.HasDB())
+              if(!await blzObj.hasDB())
               {
                 await blzObj.createDB();
               }
@@ -162,7 +162,9 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
               await blzObj.create(key, value);
               blzObj.close();
             };
-          
+            
+            console.log(JSON.stringify(originalUuid));
+            console.log(response.app.name);
             bluzelleInstance(JSON.stringify(originalUuid),response.app.name).catch(e => { 
               blzObj.close();
               throw e;
