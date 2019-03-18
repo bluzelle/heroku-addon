@@ -17,7 +17,7 @@ var auth = require('basic-auth');
 var crypto = require('crypto');
 //for generating uuids
 var uuid = require('node-uuid');
-//bluzelle db
+//bluzelle db - upgraded to 0.5v
 var {bluzelle} = require('bluzelle');
 const { URLSearchParams } = require('url');
 const fetchNode = require('node-fetch');
