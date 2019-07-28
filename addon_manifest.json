@@ -19,9 +19,8 @@
       "base_url": "https://bluzelledb.herokuapp.com/heroku/resources"
     },
     "config_vars": [
-      "BLUZELLEDB_ADDRESS",
-      "BLUZELLEDB_PORT",
-      "BLUZELLEDB_UUID"
+      "BLUZELLEDB_UUID",
+      "BLUZELLEDB_PRIVATE_KEY"
     ],
     "config_vars_prefix": "BLUZELLEDB"
   },
