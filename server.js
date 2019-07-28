@@ -31,9 +31,6 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 app.set('uuid', uuid.v4());
-app.set('bluzelleStudioUUID', uuid.v4());
-app.set('bluzelleStudioAddress', 'ws://bernoulli.bluzelle.com'); 
-app.set('bluzelleStudioPort', '51010');  
 
 //use the endpoints
 app.use('/heroku/resources', bodyParser.json());
@@ -71,7 +68,7 @@ app.post('/heroku/sso', function handleSSO(req,res) {
 
   ///////////SECOND CHECK//////////////////
   //create hash for checking token
-  var hash = crypto.createHash('sha1').update(`${req.body.id}:${config.heroku.sso_salt}:${req.body.timestamp}`).digest('hex');
+  var hash = crypto.createHash('sha1').update('${req.body.id}:${config.heroku.sso_salt}:${req.body.timestamp}').digest('hex');
 
   //check token validity
   if(hash !== req.body.token)
@@ -82,7 +79,7 @@ app.post('/heroku/sso', function handleSSO(req,res) {
 
   // Render SSO dashboard after checks.
   //switch to studio.bluzelle.com once SSL issue has been solved
-  return res.redirect(`http://bluzellestudio.herokuapp.com?address=${app.get('bluzelleStudioAddress')}&port=${app.get('bluzelleStudioPort')}&uuid=${app.get('bluzelleStudioUUID')}`);
+  return res.redirect('studio.bluzelle.com');
 });
 
 //authenticate request.  Check request header and verify against manifest
@@ -112,9 +109,8 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   res.json({
     'id': app.get('uuid'),
     'config': {
-      'BLUZELLEDB_ADDRESS': app.get('bluzelleStudioAddress'),
-      'BLUZELLEDB_PORT': app.get('bluzelleStudioPort'),
-      'BLUZELLEDB_UUID': app.get('bluzelleStudioUUID')
+      'BLUZELLEDB_UUID': 'REPLACE_WITH_PUBLIC_KEY',
+      'BLUZELLEDB_PRIVATE_KEY': 'REPLACE_WITH_PRIVATE_KEY'
     }
   });
 
@@ -122,8 +118,6 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
   var addonCallback = req.body.callback_url;
   var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
   const params = new URLSearchParams();
-
-  console.log(originalUuid);
 
   params.append('grant_type', 'authorization_code');
   params.append('code', req.body.oauth_grant.code);
@@ -146,8 +140,8 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
           .then(res => res.json())
           .then(function(response){
             let blzObj = bluzelle({
-              public_pem: 'MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ==',
-              private_pem: 'MHQCAQEEICi52IlZ0xQRdhIYrRcpjozSK5frNDCgXSrXhL/034zRoAcGBSuBBAAKoUQDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ=='
+              public_pem: process.env.BLUZELLEDB_UUID,
+              private_pem: process.env.BLUZELLEDB_PRIVATE_KEY
             });
             
             const bluzelleInstance = async function(key, value) {
@@ -166,8 +160,8 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
 // //Delete endpoint for which an add-on service is deleted
 app.delete('/heroku/resources/:id', function handleDelete(req, res) {
   let blzObj = bluzelle({
-    public_pem: 'MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ==',
-    private_pem: 'MHQCAQEEICi52IlZ0xQRdhIYrRcpjozSK5frNDCgXSrXhL/034zRoAcGBSuBBAAKoUQDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ=='
+    public_pem: process.env.BLUZELLEDB_UUID,
+    private_pem: process.env.BLUZELLEDB_PRIVATE_KEY
   });
   
   const bluzelleInstance = async function(key) {
@@ -187,8 +181,8 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
     throw e;
   });
   return res.status(204).json({
-    'message': `${req.uuid}: ` +
-      `No Content`
+    'message': '${req.uuid}: ' +
+      'No Content'
   });
 });
 
@@ -196,8 +190,8 @@ app.delete('/heroku/resources/:id', function handleDelete(req, res) {
 //return a service unavailable response
 app.put('/heroku/resources/:id', function handlePlanChanges(req, res) {
   return res.status(503).json({
-    'message': `${req.uuid}: ` +
-      `Unable to make changes to plan`
+    'message': '${req.uuid}: ' +
+      'Unable to make changes to plan'
   });
 });
 
