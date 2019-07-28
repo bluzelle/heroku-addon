@@ -146,25 +146,15 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
           .then(res => res.json())
           .then(function(response){
             let blzObj = bluzelle({
-              entry: "ws://bernoulli.bluzelle.com:51010",
-              uuid: "herokubluzelleaddonapps",
-              private_pem: "MHQCAQEEIFNmJHEiGpgITlRwao/CDki4OS7BYeI7nyz+CM8NW3xToAcGBSuBBAAKoUQDQgAEndHOcS6bE1P9xjS/U+SM2a1GbQpPuH9sWNWtNYxZr0JcF+sCS2zsD+xlCcbrRXDZtfeDmgD9tHdWhcZKIy8ejQ=="
+              public_pem: 'MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ==',
+              private_pem: 'MHQCAQEEICi52IlZ0xQRdhIYrRcpjozSK5frNDCgXSrXhL/034zRoAcGBSuBBAAKoUQDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ=='
             });
             
             const bluzelleInstance = async function(key, value) {
-              // initial create of db
-
-              if(!await blzObj.hasDB())
-              {
-                await blzObj.createDB();
-              }
-                
               await blzObj.create(key, value);
               blzObj.close();
             };
             
-            console.log(JSON.stringify(originalUuid));
-            console.log(response.app.name);
             bluzelleInstance(JSON.stringify(originalUuid),response.app.name).catch(e => { 
               blzObj.close();
               throw e;
@@ -176,9 +166,8 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
 // //Delete endpoint for which an add-on service is deleted
 app.delete('/heroku/resources/:id', function handleDelete(req, res) {
   let blzObj = bluzelle({
-    entry: "ws://bernoulli.bluzelle.com:51010",
-    uuid: "herokubluzelleaddonapps",
-    private_pem: "MHQCAQEEIFNmJHEiGpgITlRwao/CDki4OS7BYeI7nyz+CM8NW3xToAcGBSuBBAAKoUQDQgAEndHOcS6bE1P9xjS/U+SM2a1GbQpPuH9sWNWtNYxZr0JcF+sCS2zsD+xlCcbrRXDZtfeDmgD9tHdWhcZKIy8ejQ=="
+    public_pem: 'MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ==',
+    private_pem: 'MHQCAQEEICi52IlZ0xQRdhIYrRcpjozSK5frNDCgXSrXhL/034zRoAcGBSuBBAAKoUQDQgAEdTkFJdMpLYUSIGpQen9WRC9Y++ym1tmX9feVgnz0guPybd8Ri7xWxE1Jjdhc9Bc5rJy7+w+Intf3TWUPB4hisQ=='
   });
   
   const bluzelleInstance = async function(key) {

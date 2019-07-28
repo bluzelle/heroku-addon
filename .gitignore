@@ -1,2 +1,3 @@
 node_modules
-herokuaddon.pem
+pub_key.pem
+priv_key.pem
