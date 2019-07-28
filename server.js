@@ -116,7 +116,7 @@ app.post('/heroku/resources', function handleProvisioning(req, res) {
 
   var originalUuid = req.body.uuid;
   var addonCallback = req.body.callback_url;
-  var clientSecret = "a6426c87-9f35-4320-8e26-becb961d5980"  
+  var clientSecret = "CLIENT SECRET"  
   const params = new URLSearchParams();
 
   params.append('grant_type', 'authorization_code');

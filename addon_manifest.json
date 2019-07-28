@@ -8,12 +8,12 @@
     "regions": [
       "*"
     ],
-    "password": "cPY6I5jY25HpP4tJEIV7NFlYr1QSIgNN",
+    "password": "PASSWORD",
     "requires": [
       "many_per_app",
       "attachable"
     ],
-    "sso_salt": "1siYUYVM4JNDR4baj2ykHINsOPhyifsk",
+    "sso_salt": "SALT_SECRET",
     "production": {
       "sso_url": "https://bluzelledb.herokuapp.com/heroku/sso",
       "base_url": "https://bluzelledb.herokuapp.com/heroku/resources"
