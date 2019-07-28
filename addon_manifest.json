@@ -15,8 +15,8 @@
     ],
     "sso_salt": "SALT_SECRET",
     "production": {
-      "sso_url": "https://bluzelledb.herokuapp.com/heroku/sso",
-      "base_url": "https://bluzelledb.herokuapp.com/heroku/resources"
+      "sso_url": "studio.bluzelle.com/heroku/sso",
+      "base_url": "studio.bluzelle.com/heroku/resources"
     },
     "config_vars": [
       "BLUZELLEDB_UUID",
